@@ -1,0 +1,71 @@
+
+---
+title:           Covid Testing Access
+author:          Dennis Wollersheim  and Ali Lakhani
+date:            25.07.2020
+linkcolor:       cyan
+citecolor:       grey
+output:
+  pdf_document:
+    highlight:   zenburn
+---
+
+\tableofcontents
+
+
+# initialisation
+```{r init}
+
+source('_drake.R')
+
+loadd(df_covid_test_location )
+loadd(df_crow_distances )
+loadd(df_mesh_in_reach )
+loadd(df_population_in_reach )
+loadd(df_driving_time )
+
+```
+
+# driving time summary
+
+```{r}
+
+df_driving_time %>%
+  group_by(id) %>%
+  summarise( duration = mean(duration, .group='drop' )) %>%
+  inner_join(df_population_in_reach, by='id' ) %>%
+  ggplot(aes( duration, total_area) ) +
+  geom_point()
+
+df_driving_time %>%
+  group_by(id) %>%
+  summarise( duration = mean(duration, .group='drop' )) %>%
+  inner_join(df_population_in_reach, by='id' ) %>%
+  ggplot(aes( duration, total_persons) ) +
+  geom_point()
+
+
+```
+
+The closer you are to a covid testing site, the faster it is to get there...
+
+```{r }
+
+df_driving_time %>%
+  select(-starts_with('mc')) %>%
+  inner_join( df_crow_distances %>%
+             select(-starts_with('mc'), -starts_with('covid')),
+                    by=c('MB_CODE16','id') ) %>%
+  mutate(distance_category=cut(dist, breaks=0:7*5000, labels=c('0-5km','5-10km', '10-15km','15-20km', '20-25km', '25-30km', '30-35km'))) %>%
+  group_by(id, distance_category) %>%
+  summarise( duration = mean(duration, .groups='drop' )) %>%
+  ggplot(aes( distance_category, duration) ) +
+  geom_violin()
+
+
+
+
+
+```
+
+

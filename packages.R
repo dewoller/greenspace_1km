@@ -29,8 +29,9 @@ library(stplanr)      # geographic transport data package
 library(tmap)         # visualization package (see Chapter 8)
 library(osrm)         # routing package
 library(dodgr)         # routing package
+library(multidplyr)         # routing package
 
-library(graphhopper)         # routing package
+#library(graphhopper)         # routing package
 
 #install.packages('stplanr')
 #install.packages('dodgr')
