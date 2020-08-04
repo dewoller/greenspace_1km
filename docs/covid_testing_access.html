@@ -495,16 +495,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhospitalptaccessabilitytree5fb535d83f7a95694e5481994787d7fd105e7477targetblank5fb535da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/hospital_pt_accessability/tree/5fb535d83f7a95694e5481994787d7fd105e7477" target="_blank">5fb535d</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhospitalptaccessabilitytree6553a85e60ac79258451d377e7356b3a4b329b47targetblank6553a85a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/hospital_pt_accessability/tree/6553a85e60ac79258451d377e7356b3a4b329b47" target="_blank">6553a85</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhospitalptaccessabilitytree5fb535d83f7a95694e5481994787d7fd105e7477targetblank5fb535da" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhospitalptaccessabilitytree6553a85e60ac79258451d377e7356b3a4b329b47targetblank6553a85a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/dewoller/hospital_pt_accessability/tree/5fb535d83f7a95694e5481994787d7fd105e7477" target="_blank">5fb535d</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/dewoller/hospital_pt_accessability/tree/6553a85e60ac79258451d377e7356b3a4b329b47" target="_blank">6553a85</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -580,6 +580,40 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/dewoller/hospital_pt_accessability/blob/6553a85e60ac79258451d377e7356b3a4b329b47/analysis/covid_testing_access.Rmd" target="_blank">6553a85</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-08-04
+</td>
+<td>
+workflowr::wflow_publish(“analysis/covid_testing_access.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/dewoller/hospital_pt_accessability/43baeaf5cc71fd1e6bac97aa0f6f080718aadc54/docs/covid_testing_access.html" target="_blank">43baeaf</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-08-04
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/dewoller/hospital_pt_accessability/blob/5fb535d83f7a95694e5481994787d7fd105e7477/analysis/covid_testing_access.Rmd" target="_blank">5fb535d</a>
 </td>
 <td>
@@ -640,9 +674,7 @@ loadd(df_population_in_reach )
 loadd(df_driving_time )
 loadd(df_distance_to_testing)
 loadd( df_mesh_sa1 )
-loadd( df_mesh_sa2 )
-
-#df_mesh_correspondence %&gt;% count(RA_CODE_2016 )</code></pre>
+loadd( df_mesh_sa2 )</code></pre>
 </div>
 <div id="driving-time-summary" class="section level1">
 <h1>driving time summary</h1>
@@ -655,6 +687,43 @@ loadd( df_mesh_sa2 )
 <pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
 <pre><code>Warning: Removed 4 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/covid_testing_access.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-1">
+Past versions of unnamed-chunk-1-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-1-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/dewoller/hospital_pt_accessability/blob/43baeaf5cc71fd1e6bac97aa0f6f080718aadc54/docs/figure/covid_testing_access.Rmd/unnamed-chunk-1-1.png" target="_blank">43baeaf</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>df_driving_time %&gt;%
   group_by(id) %&gt;%
   summarise( duration = mean(duration, .group=&#39;drop&#39; )) %&gt;%
@@ -664,6 +733,43 @@ loadd( df_mesh_sa2 )
 <pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
 <pre><code>Warning: Removed 4 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/covid_testing_access.Rmd/unnamed-chunk-1-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-2">
+Past versions of unnamed-chunk-1-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-1-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/dewoller/hospital_pt_accessability/blob/43baeaf5cc71fd1e6bac97aa0f6f080718aadc54/docs/figure/covid_testing_access.Rmd/unnamed-chunk-1-2.png" target="_blank">43baeaf</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>The closer you are to a covid testing site, the faster it is to get there…</p>
 <pre class="r"><code>df_driving_time %&gt;%
   select(-starts_with(&#39;mc&#39;)) %&gt;%
@@ -678,6 +784,43 @@ loadd( df_mesh_sa2 )
 <pre><code>`summarise()` regrouping output by &#39;id&#39; (override with `.groups` argument)</code></pre>
 <pre><code>Warning: Removed 4 rows containing non-finite values (stat_ydensity).</code></pre>
 <p><img src="figure/covid_testing_access.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-1">
+Past versions of unnamed-chunk-2-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/dewoller/hospital_pt_accessability/blob/43baeaf5cc71fd1e6bac97aa0f6f080718aadc54/docs/figure/covid_testing_access.Rmd/unnamed-chunk-2-1.png" target="_blank">43baeaf</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="what-is-the-population-access-to-testing" class="section level1">
 <h1>what is the population access to testing</h1>
@@ -689,6 +832,43 @@ loadd( df_mesh_sa2 )
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 <pre><code>Warning: Removed 4 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="figure/covid_testing_access.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-1">
+Past versions of unnamed-chunk-3-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-3-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/dewoller/hospital_pt_accessability/blob/43baeaf5cc71fd1e6bac97aa0f6f080718aadc54/docs/figure/covid_testing_access.Rmd/unnamed-chunk-3-1.png" target="_blank">43baeaf</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>df_distance_to_testing %&gt;%
   inner_join(df_mesh_detail) %&gt;%
   mutate(duration_category=cut(duration, breaks=0:12*10, labels=make_labels(max_dist=120, divisor=10, descriptor=&#39;min&#39;))) %&gt;%
@@ -700,6 +880,43 @@ loadd( df_mesh_sa2 )
 <pre><code>Joining, by = &quot;MB_CODE16&quot;</code></pre>
 <pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
 <p><img src="figure/covid_testing_access.Rmd/unnamed-chunk-3-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-2">
+Past versions of unnamed-chunk-3-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-3-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/dewoller/hospital_pt_accessability/blob/43baeaf5cc71fd1e6bac97aa0f6f080718aadc54/docs/figure/covid_testing_access.Rmd/unnamed-chunk-3-2.png" target="_blank">43baeaf</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-08-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>closest testing site to mesh block</p>
 <p>How many mesh blocks / population are closest to a test site</p>
 <p>for each mesh block, find the closest test site (as crow flies ) for each test site, how many mesh blocks / population / average road distance to these closest mesh blocks</p>
@@ -756,39 +973,6 @@ df_closest_site %&gt;%
             duration = mean(duration),
             n_mesh_blocks = n(), .groups=&#39;drop&#39;) %&gt;%
   write_csv(&#39;output/summary_sa2.csv&#39;)</code></pre>
-</div>
-<div id="how-many-mesh-blocks-in-victoria" class="section level1">
-<h1>How many mesh blocks in Victoria?</h1>
-<pre class="r"><code>df_distance_to_testing %&gt;% nrow()</code></pre>
-<pre><code>[1] 85487</code></pre>
-<p>#What was the mean, SD, min and max travel time and distance for mesh blocks to the closest provider?</p>
-<p>Distance in M, duration in minutes</p>
-<pre class="r"><code>df_closest_site %&gt;%
-  select(-starts_with(&#39;mc&#39;), -starts_with(&#39;covid&#39;))  %&gt;%
-  inner_join(df_mesh_sa2, by = &quot;MB_CODE16&quot;)  %&gt;%
-  select(-starts_with(&#39;mc&#39;), -starts_with(&#39;covid&#39;))  %&gt;%
-  inner_join(df_distance_to_testing, by = c(&quot;MB_CODE16&quot;, &#39;id&#39;) ) %&gt;%
-  drop_na() %&gt;%
-  summarise( across( starts_with(&#39;d&#39;),
-                    list(mean=mean, min=min, max=max, sd=sd ),
-                    .names=&quot;{col}.{fn}&quot; ))</code></pre>
-<pre><code># A tibble: 1 x 8
-  dist.mean dist.min dist.max dist.sd duration.mean duration.min duration.max
-      &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;         &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
-1     7582.     3.62  204348.  13978.          12.0            0         444.
-# … with 1 more variable: duration.sd &lt;dbl&gt;</code></pre>
-<p>What program did you use and road network did you use to conduct travel time</p>
-<pre class="r"><code>#bibtex::write.bib(c(&#39;tidyverse&#39;, &#39;drake&#39;, &#39;osrm&#39;,&#39;sf&#39;,&#39;rmarkdown&#39;), file=&#39;output/references&#39;)</code></pre>
-<p>(references file|output/references.bib)</p>
-<p><span class="citation">@misc</span>{OpenStreetMap, author = {{OpenStreetMap contributors}}, title = {{Australia road network dump retrieved from <a href="https://www.geofabrik.de" class="uri">https://www.geofabrik.de</a> }}, howpublished = “”, year = {2020}, }</p>
-<p>Road network came from from open street map (2020). Statistics were done using R 4.0 (R Core Team, 2020), and the GIS was done using the sf and osrm packages. The tidyverse, rmarkdown, and drake packages were used to provide reproducible results</p>
-<p><span class="citation">@Manual</span>{, title = {R: A Language and Environment for Statistical Computing}, author = {{R Core Team}}, organization = {R Foundation for Statistical Computing}, address = {Vienna, Austria}, year = {2020}, url = {<a href="http://www.R-project.org/" class="uri">http://www.R-project.org/</a>}, }</p>
-<p><span class="citation">@Article</span>{tidyverse, title = {Welcome to the {tidyverse}}, author = {Hadley Wickham and Mara Averick and Jennifer Bryan and Winston Chang and Lucy D’Agostino McGowan and Romain François and Garrett Grolemund and Alex Hayes and Lionel Henry and Jim Hester and Max Kuhn and Thomas Lin Pedersen and Evan Miller and Stephan Milton Bache and Kirill Müller and Jeroen Ooms and David Robinson and Dana Paige Seidel and Vitalie Spinu and Kohske Takahashi and Davis Vaughan and Claus Wilke and Kara Woo and Hiroaki Yutani}, year = {2019}, journal = {Journal of Open Source Software}, volume = {4}, number = {43}, pages = {1686}, doi = {10.21105/joss.01686}, }</p>
-<p><span class="citation">@Article</span>{drake, title = {The drake R package: a pipeline toolkit for reproducibility and high-performance computing}, author = {William Michael Landau}, journal = {Journal of Open Source Software}, year = {2018}, volume = {3}, number = {21}, url = {<a href="https://doi.org/10.21105/joss.00550" class="uri">https://doi.org/10.21105/joss.00550</a>}, }</p>
-<p><span class="citation">@Manual</span>{osrm, title = {osrm: Interface Between R and the OpenStreetMap-Based Routing Service OSRM}, author = {Timothée Giraud}, year = {2020}, note = {R package version 3.3.3}, url = {<a href="https://CRAN.R-project.org/package=osrm" class="uri">https://CRAN.R-project.org/package=osrm</a>}, }</p>
-<p><span class="citation">@Article</span>{sf, author = {Edzer Pebesma}, title = {{Simple Features for R: Standardized Support for Spatial Vector Data}}, year = {2018}, journal = {{The R Journal}}, doi = {10.32614/RJ-2018-009}, url = {<a href="https://doi.org/10.32614/RJ-2018-009" class="uri">https://doi.org/10.32614/RJ-2018-009</a>}, pages = {439–446}, volume = {10}, number = {1}, }</p>
-<p><span class="citation">@Manual</span>{rmarkdown1, title = {rmarkdown: Dynamic Documents for R}, author = {JJ Allaire and Yihui Xie and Jonathan McPherson and Javier Luraschi and Kevin Ushey and Aron Atkins and Hadley Wickham and Joe Cheng and Winston Chang and Richard Iannone}, year = {2020}, note = {R package version 2.1}, url = {<a href="https://github.com/rstudio/rmarkdown" class="uri">https://github.com/rstudio/rmarkdown</a>}, }</p>
-<p><span class="citation">@Book</span>{rmarkdown2, title = {R Markdown: The Definitive Guide}, author = {Yihui Xie and J.J. Allaire and Garrett Grolemund}, publisher = {Chapman and Hall/CRC}, address = {Boca Raton, Florida}, year = {2018}, note = {ISBN 9781138359338}, url = {<a href="https://bookdown.org/yihui/rmarkdown" class="uri">https://bookdown.org/yihui/rmarkdown</a>}, }</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -827,23 +1011,23 @@ other attached packages:
 loaded via a namespace (and not attached):
  [1] nlme_3.1-147       fs_1.4.1           filelock_1.0.2     progress_1.2.2    
  [5] httr_1.4.1         rprojroot_1.3-2    tools_4.0.2        backports_1.1.8   
- [9] utf8_1.1.4         R6_2.4.1           KernSmooth_2.23-17 DBI_1.1.0         
-[13] colorspace_1.4-1   withr_2.2.0        sp_1.4-2           tidyselect_1.1.0  
-[17] prettyunits_1.1.1  compiler_4.0.2     git2r_0.27.1       Xmisc_0.2.1       
-[21] cli_2.0.2          labeling_0.3       scales_1.1.1       classInt_0.4-3    
-[25] digest_0.6.25      txtq_0.2.3         pkgconfig_2.0.3    htmltools_0.5.0   
-[29] dbplyr_1.4.3       rlang_0.4.7        readxl_1.3.1       rstudioapi_0.11   
-[33] generics_0.0.2     farver_2.0.3       jsonlite_1.7.0     magrittr_1.5      
-[37] Rcpp_1.0.5         munsell_0.5.0      fansi_0.4.1        lifecycle_0.2.0   
-[41] stringi_1.4.6      whisker_0.4        yaml_2.2.1         snakecase_0.11.0  
-[45] storr_1.2.1        grid_4.0.2         parallel_4.0.2     promises_1.1.1    
-[49] crayon_1.3.4       lattice_0.20-41    haven_2.2.0        hms_0.5.3         
-[53] knitr_1.28         pillar_1.4.6       igraph_1.2.5       base64url_1.4     
-[57] reprex_0.3.0       glue_1.4.1         evaluate_0.14      modelr_0.1.7      
-[61] vctrs_0.3.2        httpuv_1.5.4       cellranger_1.1.0   gtable_0.3.0      
-[65] assertthat_0.2.1   xfun_0.16          broom_0.5.6        e1071_1.7-3       
-[69] later_1.1.0.1      class_7.3-17       memoise_1.1.0      workflowr_1.6.2   
-[73] units_0.6-6        ellipsis_0.3.1    </code></pre>
+ [9] R6_2.4.1           KernSmooth_2.23-17 DBI_1.1.0          colorspace_1.4-1  
+[13] withr_2.2.0        sp_1.4-2           tidyselect_1.1.0   prettyunits_1.1.1 
+[17] compiler_4.0.2     git2r_0.27.1       Xmisc_0.2.1        cli_2.0.2         
+[21] labeling_0.3       scales_1.1.1       classInt_0.4-3     digest_0.6.25     
+[25] txtq_0.2.3         pkgconfig_2.0.3    htmltools_0.5.0    dbplyr_1.4.3      
+[29] rlang_0.4.7        readxl_1.3.1       rstudioapi_0.11    generics_0.0.2    
+[33] farver_2.0.3       jsonlite_1.7.0     magrittr_1.5       Rcpp_1.0.5        
+[37] munsell_0.5.0      fansi_0.4.1        lifecycle_0.2.0    stringi_1.4.6     
+[41] whisker_0.4        yaml_2.2.1         snakecase_0.11.0   storr_1.2.1       
+[45] grid_4.0.2         parallel_4.0.2     promises_1.1.1     crayon_1.3.4      
+[49] lattice_0.20-41    haven_2.2.0        hms_0.5.3          knitr_1.28        
+[53] pillar_1.4.6       igraph_1.2.5       base64url_1.4      reprex_0.3.0      
+[57] glue_1.4.1         evaluate_0.14      modelr_0.1.7       vctrs_0.3.2       
+[61] httpuv_1.5.4       cellranger_1.1.0   gtable_0.3.0       assertthat_0.2.1  
+[65] xfun_0.16          broom_0.5.6        e1071_1.7-3        later_1.1.0.1     
+[69] class_7.3-17       memoise_1.1.0      workflowr_1.6.2    units_0.6-6       
+[73] ellipsis_0.3.1    </code></pre>
 </div>
 </div>
 
