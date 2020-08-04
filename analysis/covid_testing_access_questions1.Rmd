@@ -8,13 +8,16 @@ citecolor:       grey
 output:
   pdf_document:
     highlight:   zenburn
+  html_document:
+    code_folding: hide
+  workflowr::wflow_html:
+    code_folding: hide
 ---
 
 \tableofcontents
 
 
-# initialisation
-```{r init}
+```{r init, include=F}
 
 source('_drake.R')
 
@@ -46,23 +49,21 @@ df_closest_site %>%
   drop_na() %>%
   summarise( across( starts_with('d'),
                     list(mean=mean, min=min, max=max, sd=sd ),
-                    .names="{col}.{fn}" )) %>%
+                    .names="{col}.{fn}" ), .groups='drop') %>%
   gt::gt()
 
-  #bibtex::write.bib(c('tidyverse', 'drake', 'osrm','sf','rmarkdown'), file='output/references')
 
 ```
 
 # What program did you use and road network did you use to conduct travel time
 
-
-
+```{r}
+#bibtex::write.bib(c('tidyverse', 'drake', 'osrm','sf','rmarkdown'), file='output/references')
 ```
-
-# Bibtex references
 
 Road network came from from open street map (2020). Statistics were done using R 4.0 (R Core Team, 2020), and the GIS was done using the sf and osrm packages. The tidyverse, rmarkdown, and drake packages were used to provide reproducible results
 
+# Bibtex references
 
 
  @misc{OpenStreetMap,
