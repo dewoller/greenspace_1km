@@ -18,13 +18,20 @@ output:
 
 source('_drake.R')
 
-loadd(df_covid_test_location )
+loadd(df_covid_remoteness)
+loadd(df_mesh_detail )
 loadd(df_crow_distances )
 loadd(df_mesh_in_reach )
 loadd(df_population_in_reach )
 loadd(df_driving_time )
+loadd(df_distance_to_testing)
+loadd( df_mesh_sa1 )
+loadd( df_mesh_sa2 )
+
+#df_mesh_correspondence %>% count(RA_CODE_2016 )
 
 ```
+
 
 # driving time summary
 
@@ -51,12 +58,13 @@ The closer you are to a covid testing site, the faster it is to get there...
 
 ```{r }
 
+
 df_driving_time %>%
   select(-starts_with('mc')) %>%
   inner_join( df_crow_distances %>%
              select(-starts_with('mc'), -starts_with('covid')),
                     by=c('MB_CODE16','id') ) %>%
-  mutate(distance_category=cut(dist, breaks=0:7*5000, labels=c('0-5km','5-10km', '10-15km','15-20km', '20-25km', '25-30km', '30-35km'))) %>%
+  mutate(distance_category=cut(dist, breaks=0:12*5000, labels=make_labels(max_dist=60, divisor=5, descriptor='km'))) %>%
   group_by(id, distance_category) %>%
   summarise( duration = mean(duration, .groups='drop' )) %>%
   ggplot(aes( distance_category, duration) ) +
@@ -65,7 +73,224 @@ df_driving_time %>%
 
 
 
+```
+
+
+# what is the population access to testing
+
+
+```{r}
+
+
+df_distance_to_testing %>%
+  inner_join(df_mesh_detail) %>%
+  ggplot( aes( duration) ) + geom_histogram() +
+  ggtitle( "Number of mesh blocks by time to drive to nearest testing site")
+
+
+df_distance_to_testing %>%
+  inner_join(df_mesh_detail) %>%
+  mutate(duration_category=cut(duration, breaks=0:12*10, labels=make_labels(max_dist=120, divisor=10, descriptor='min'))) %>%
+  group_by( duration_category) %>%
+  summarise( persons = sum(Person)) %>%
+  ggplot( aes( duration_category, persons) ) +
+    geom_col() +
+  ggtitle( "Population within N minutes of closest testing site ")
+
+
+```
+
+closest testing site to mesh block
+
+How many mesh blocks / population are closest to a test site
+
+for each mesh block, find the closest test site (as crow flies )
+for each test site, how many mesh blocks / population / average road distance  to these closest mesh blocks
+
+testing site x closest population, number of mesh blocks
+
+remoteness of testing site (based on shape file)
+
+```{r}
+
+df_crow_distances %>%
+  group_by( MB_CODE16) %>%
+  filter( dist == min(dist) ) %>%
+  ungroup() %>%
+  { . } -> df_closest_site
+
+df_closest_site %>%
+  select(-starts_with('mc'), -starts_with('covid'))  %>%
+  inner_join(df_mesh_detail, by = "MB_CODE16")  %>%
+  inner_join(df_distance_to_testing, by = c("MB_CODE16", 'id') ) %>%
+  group_by(id)  %>%
+  summarise( area = sum(AREA_ALBERS_SQKM ),
+            dwelling = sum(Dwelling),
+            population = sum(Person),
+            mean_dist = mean(dist),
+            mean_duration = mean(duration),
+            n_mesh_blocks=n(),
+            .groups='drop'
+            ) %>%
+  inner_join( df_covid_remoteness, by='id') %>%
+  { . } -> df_site_summary
+#
+#
+df_site_summary %>%
+  write_csv('output/summary_testing_site.csv')
 
 ```
 
 
+
+marry mesh block into sa2 -
+
+
+which SA's have shortest and longest travel times to testing sites
+
+average traveltime Meshblock per sa1
+
+
+sa1 x avg travel time, sa2 x avg travel time
+
+
+```{r csv }
+
+df_closest_site %>%
+  select(-starts_with('mc'), -starts_with('covid'))  %>%
+  inner_join(df_mesh_sa1, by = "MB_CODE16")  %>%
+  select(-starts_with('mc'), -starts_with('covid'))  %>%
+  inner_join(df_distance_to_testing, by = c("MB_CODE16", 'id') ) %>%
+  group_by(SA1_MAIN16) %>%
+  summarise( dist = mean(dist),
+         duration = mean(duration),
+         n_mesh_blocks = n(), .groups='drop') %>%
+  write_csv('output/summary_sa1.csv')
+
+
+df_closest_site %>%
+  select(-starts_with('mc'), -starts_with('covid'))  %>%
+  inner_join(df_mesh_sa2, by = "MB_CODE16")  %>%
+  select(-starts_with('mc'), -starts_with('covid'))  %>%
+  inner_join(df_distance_to_testing, by = c("MB_CODE16", 'id') ) %>%
+  group_by(SA2_MAIN16) %>%
+  summarise( dist = mean(dist),
+            duration = mean(duration),
+            n_mesh_blocks = n(), .groups='drop') %>%
+  write_csv('output/summary_sa2.csv')
+
+
+```
+# How many mesh blocks in Victoria?
+```{r}
+df_distance_to_testing %>% nrow()
+```
+#What was the mean, SD, min and max travel time and distance for mesh blocks to the closest provider?
+
+Distance in M, duration in minutes
+
+
+```{r}
+
+df_closest_site %>%
+  select(-starts_with('mc'), -starts_with('covid'))  %>%
+  inner_join(df_mesh_sa2, by = "MB_CODE16")  %>%
+  select(-starts_with('mc'), -starts_with('covid'))  %>%
+  inner_join(df_distance_to_testing, by = c("MB_CODE16", 'id') ) %>%
+  drop_na() %>%
+  summarise( across( starts_with('d'),
+                    list(mean=mean, min=min, max=max, sd=sd ),
+                    .names="{col}.{fn}" ))
+
+```
+
+What program did you use and road network did you use to conduct travel time
+```{r}
+
+
+#bibtex::write.bib(c('tidyverse', 'drake', 'osrm','sf','rmarkdown'), file='output/references')
+
+
+```
+(references file|output/references.bib)
+
+
+
+ @misc{OpenStreetMap,
+ author = {{OpenStreetMap contributors}},
+ title = {{Australia road network dump retrieved from https://www.geofabrik.de }},
+ howpublished = "\url{ https://www.geofabrik.de/data/download.html }",
+ year = {2020},
+ }
+
+Road network came from from open street map (2020). Statistics were done using R 4.0 (R Core Team, 2020), and the GIS was done using the sf and osrm packages. The tidyverse, rmarkdown, and drake packages were used to provide reproducible results
+
+@Manual{,
+title = {R: A Language and Environment for Statistical Computing},
+author = {{R Core Team}},
+organization = {R Foundation for Statistical Computing},
+address = {Vienna, Austria},
+year = {2020},
+url = {http://www.R-project.org/},
+}
+
+
+@Article{tidyverse,
+  title = {Welcome to the {tidyverse}},
+  author = {Hadley Wickham and Mara Averick and Jennifer Bryan and Winston Chang and Lucy D'Agostino McGowan and Romain François and Garrett Grolemund and Alex Hayes and Lionel Henry and Jim Hester and Max Kuhn and Thomas Lin Pedersen and Evan Miller and Stephan Milton Bache and Kirill Müller and Jeroen Ooms and David Robinson and Dana Paige Seidel and Vitalie Spinu and Kohske Takahashi and Davis Vaughan and Claus Wilke and Kara Woo and Hiroaki Yutani},
+  year = {2019},
+  journal = {Journal of Open Source Software},
+  volume = {4},
+  number = {43},
+  pages = {1686},
+  doi = {10.21105/joss.01686},
+}
+
+@Article{drake,
+  title = {The drake R package: a pipeline toolkit for reproducibility and high-performance computing},
+  author = {William Michael Landau},
+  journal = {Journal of Open Source Software},
+  year = {2018},
+  volume = {3},
+  number = {21},
+  url = {https://doi.org/10.21105/joss.00550},
+}
+
+@Manual{osrm,
+  title = {osrm: Interface Between R and the OpenStreetMap-Based Routing Service
+OSRM},
+  author = {Timothée Giraud},
+  year = {2020},
+  note = {R package version 3.3.3},
+  url = {https://CRAN.R-project.org/package=osrm},
+}
+
+@Article{sf,
+  author = {Edzer Pebesma},
+  title = {{Simple Features for R: Standardized Support for Spatial Vector Data}},
+  year = {2018},
+  journal = {{The R Journal}},
+  doi = {10.32614/RJ-2018-009},
+  url = {https://doi.org/10.32614/RJ-2018-009},
+  pages = {439--446},
+  volume = {10},
+  number = {1},
+}
+
+@Manual{rmarkdown1,
+  title = {rmarkdown: Dynamic Documents for R},
+  author = {JJ Allaire and Yihui Xie and Jonathan McPherson and Javier Luraschi and Kevin Ushey and Aron Atkins and Hadley Wickham and Joe Cheng and Winston Chang and Richard Iannone},
+  year = {2020},
+  note = {R package version 2.1},
+  url = {https://github.com/rstudio/rmarkdown},
+}
+
+@Book{rmarkdown2,
+  title = {R Markdown: The Definitive Guide},
+  author = {Yihui Xie and J.J. Allaire and Garrett Grolemund},
+  publisher = {Chapman and Hall/CRC},
+  address = {Boca Raton, Florida},
+  year = {2018},
+  note = {ISBN 9781138359338},
+  url = {https://bookdown.org/yihui/rmarkdown},
+}
