@@ -4,19 +4,23 @@ max_distance = 5
 the_plan <-
   drake_plan(
 
-             map_mesh= read_sf( 'data/meshblocks/MB_2016_VIC.shp') ,
+             map_mesh= read_sf( 'data/meshblocks/MB_2016_VIC.shp') %>%
+               rmapshaper::ms_simplify( sys = TRUE) ,
 
-             df_lga_lockdown=read_csv('data/lga_lockdown.csv') %>%
+             df_lga_lockdown=read_csv(file_in( 'data/lga_lockdown.csv')) %>%
                janitor::clean_names() %>%
                rename( lga_name = municipality ),
 
              map_lockdown_lga= read_sf( 'data/lga/LGA_2016_AUST.shp') %>%
+               rmapshaper::ms_simplify( sys = TRUE)  %>%
                filter(STE_CODE16 == 2) %>%
                mutate( lga_name = str_replace( LGA_NAME16, ' *\\(.*\\)','') ) %>%
                inner_join( df_lga_lockdown, by='lga_name'),
 
-             map_sa1= read_sf( 'data/sa1/SA1_2016_AUST.shp') ,
-             map_sa2= read_sf( 'data/sa2/SA2_2016_AUST.shp') ,
+             map_sa1= read_sf( 'data/sa1/SA1_2016_AUST.shp') %>%
+               rmapshaper::ms_simplify( sys = TRUE)  ,
+             map_sa2= read_sf( 'data/sa2/SA2_2016_AUST.shp') %>%
+               rmapshaper::ms_simplify( sys = TRUE)  ,
              #map_remoteness = read_sf("data/remoteness/RA_2016_AUST.shp"),
 
              df_mesh_detail = read_excel("data/2016 census mesh block counts.xls", sheet="Table 2", skip=5,
@@ -58,7 +62,7 @@ the_plan <-
 
            df_mesh_lockdown_distance = calculate_intermesh_distances( df_mesh_centroids, df_mesh_lockdown, df_mesh_detail, map_mesh),
            df_mesh_lockdown_summary = summarise_intermesh_distances( df_mesh_lockdown_distance, df_mesh_lockdown, df_mesh_detail, df_mesh_sa1, df_mesh_sa2),
-#
+           #
            report = target( wflow_publish(knitr_in("analysis/lockdown_greenspace.Rmd"),
                                           view = TRUE,
                                           verbose = TRUE ) ),
