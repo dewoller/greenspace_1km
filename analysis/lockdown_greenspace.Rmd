@@ -26,7 +26,7 @@ loadd(df_mesh_detail)
 # No Parkland Meshblock Summary
 
 
-```{r}
+```{r none}
 
   df_mesh_lockdown_summary %>%
     filter(as.numeric(area)==0) %>%
@@ -49,10 +49,12 @@ gt::tab_header(
                title = "Meshblocks with no parks within 5km",
                subtitle = "Summary statistics"
 )
+```
 
 # LGA level summary
 
-```{r}
+
+```{r lga}
 
 df_mesh_lockdown_summary  %>%
   group_by(lga_name) %>%
