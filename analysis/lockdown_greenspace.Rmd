@@ -190,10 +190,9 @@ map_sa2 %>%
 
 # Interactive Map
 ```{r interactive_map2}
+
 map_levels = c('0-5km^2', '5-10km^2', '10-15km^2','15-20km^2','>20km^2')
-
-map_colors = RColorBrewer::brewer.pal(5,'Blues')
-
+map_colors = RColorBrewer::brewer.pal(6,'YlOrRd')[2:6]
 map_palette = colorFactor(map_colors, levels=map_levels)
 
 map_sa2 %>%
