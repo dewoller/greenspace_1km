@@ -1,0 +1,129 @@
+
+---
+title:           Lockdown Greenspace Access
+author:          Dr Ali Lakhani, Dr Dennis Wollersheim, Mr Prosper Korah, Professor Elizabeth Kendall
+date:            25.07.2020
+linkcolor:       cyan
+citecolor:       grey
+output:
+  workflowr::wflow_html:
+    code_folding: hide
+---
+
+\tableofcontents
+
+
+```{r init, include=F}
+
+source('_drake.R')
+
+loadd(df_mesh_lockdown_summary)
+loadd(map_mesh)
+
+```
+
+# LGA level summary
+
+```{r}
+
+df_mesh_lockdown_summary  %>%
+  group_by(lga_name) %>%
+  select(-starts_with('mc'), -State) %>%
+  mutate( area = units::set_units( area, 'km^2') ) %>%
+  summarise(across(.cols=where(is_numeric),
+                   .fns=list(mean=mean, max=max, min=min, sd=sd, total = sum),
+                   .names = "{col}.{fn}"), number_mesh_blocks = n(),
+            .groups='drop') %>%
+  { . } -> df_lga_summary
+
+df_lga_summary %>%
+  gt::gt()
+
+df_lga_summary %>%
+  write_csv('output/lockdown_greenspace_lga_summary.csv')
+
+```
+
+# SA2 level summary
+(first 10 rows)
+
+```{r SA2}
+
+df_mesh_lockdown_summary  %>%
+  group_by(SA2_MAIN16) %>%
+  select(-starts_with('mc'), -State) %>%
+  mutate( area = units::set_units( area, 'km^2') ) %>%
+  summarise(across(.cols=where(is_numeric),
+                   .fns=list(mean=mean, max=max, min=min, sd=sd, total = sum),
+                   .names = "{col}.{fn}"), number_mesh_blocks = n(),
+            .groups='drop') %>%
+  { . } -> df_sa2_summary
+
+df_sa2_summary %>%
+  head(10) %>%
+gt::gt()
+
+df_sa2_summary %>%
+  write_csv('output/lockdown_greenspace_sa2_summary.csv')
+
+```
+
+# SA1 level summary
+(first 10 rows)
+
+```{r SA1}
+
+df_mesh_lockdown_summary  %>%
+  group_by(SA1_MAIN16) %>%
+  select(-starts_with('mc'), -State) %>%
+  mutate( area = units::set_units( area, 'km^2') ) %>%
+  summarise(across(.cols=where(is_numeric),
+                   .fns=list(mean=mean, max=max, min=min, sd=sd, total = sum),
+                   .names = "{col}.{fn}"), number_mesh_blocks = n(),
+            .groups='drop') %>%
+  { . } -> df_sa1_summary
+
+df_sa1_summary %>%
+  head(10) %>%
+  gt::gt()
+
+  df_sa1_summary %>%
+  write_csv('output/lockdown_greenspace_sa1_summary.csv')
+
+```
+
+# Map
+```{r map1}
+
+map_mesh %>%
+  inner_join(df_mesh_lockdown_summary, by = "MB_CODE16" ) %>%
+  mutate( area = units::set_units( area, 'km^2') %>% as.numeric() ) %>%
+  ggplot() +
+  geom_sf( aes( fill = area ),lwd=0 ) +
+  scale_fill_viridis_c(option = "plasma") +
+  ggtitle('Km^2 greenspace access within 5km of meshblock')
+
+```
+
+# Map
+```{r map2}
+
+map_mesh %>%
+  inner_join(df_mesh_lockdown_summary, by = "MB_CODE16" ) %>%
+  filter( MB_CATEGORY_NAME_2016 == 'Parkland') %>%
+  { . } -> df_parks
+
+map_mesh %>%
+  inner_join(df_mesh_lockdown_summary, by = "MB_CODE16" ) %>%
+  filter( MB_CATEGORY_NAME_2016 != 'Parkland') %>%
+  mutate( area = units::set_units( area, 'km^2') %>% as.numeric() ) %>%
+  ggplot() +
+  geom_sf( aes( fill = area ),lwd=0 ) +
+  geom_sf(data=df_parks, fill="green") +
+  scale_fill_viridis_c(option = "plasma") +
+  ggtitle('Km^2 greenspace access within 5km of meshblock. Green is parks')
+
+```
+
+
+

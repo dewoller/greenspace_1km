@@ -42,6 +42,13 @@ library(osrm)         # routing package
 #library(GGally) # for parallel coordinate plot
 #library(e1071)
 
+
+library(geohash)
+library(cleangeo)
+library(sp)
+library(rgeos)
+library(workflowr)
+
 library(rvest)
 conflict_prefer("pluck", "purrr")
 
