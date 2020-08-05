@@ -110,11 +110,18 @@ map_mesh %>%
 
 map_mesh %>%
   inner_join(df_mesh_lockdown_summary, by = "MB_CODE16" ) %>%
+  filter( MB_CATEGORY_NAME_2016 == 'Parkland') %>%
+  { . } -> df_parks
+
+map_mesh %>%
+  inner_join(df_mesh_lockdown_summary, by = "MB_CODE16" ) %>%
+  filter( MB_CATEGORY_NAME_2016 != 'Parkland') %>%
   mutate( area = units::set_units( area, 'km^2') %>% as.numeric() ) %>%
   ggplot() +
   geom_sf( aes( fill = area ),lwd=0 ) +
+  geom_sf(data=df_parks, fill="green") +
   scale_fill_viridis_c(option = "plasma") +
-  ggtitle('Km^2 greenspace access within 5km of meshblock')
+  ggtitle('Km^2 greenspace access within 5km of meshblock. Green is parks')
 
 ```
 
