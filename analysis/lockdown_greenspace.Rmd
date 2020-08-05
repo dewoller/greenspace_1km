@@ -18,7 +18,10 @@ code_folding: hide
 source('_drake.R')
 
 loadd(df_mesh_lockdown_summary)
+loadd(df_mesh_lockdown_summary_parks)
 loadd(map_mesh)
+loadd(map_sa1)
+loadd(map_sa2)
 loadd(df_mesh_lockdown)
 loadd(df_mesh_detail)
 ```
@@ -138,13 +141,21 @@ df_sa1_summary %>%
 # Map
 ```{r map1}
 
-map_mesh %>%
-  inner_join(df_mesh_lockdown_summary, by = "MB_CODE16" ) %>%
-  mutate( area = units::set_units( area, 'km^2') %>% as.numeric() ) %>%
+map_sa1 %>%
+  inner_join(df_sa1_summary, by = "SA1_MAIN16" ) %>%
+  mutate( area.mean = area.mean %>% as.numeric() ) %>%
   ggplot() +
-  geom_sf( aes( fill = area ),lwd=0 ) +
+  geom_sf( aes( fill = area.mean ),lwd=0 ) +
   scale_fill_viridis_c(option = "plasma") +
-  ggtitle('Km^2 greenspace access within 5km of meshblock')
+  ggtitle('Km^2 greenspace access within 5km of meshblock average for SA1')
+
+map_sa2 %>%
+  inner_join(df_sa2_summary, by = "SA2_MAIN16" ) %>%
+  mutate( area.mean = area.mean %>% as.numeric() ) %>%
+  ggplot() +
+  geom_sf( aes( fill = area.mean ),lwd=0 ) +
+  scale_fill_viridis_c(option = "plasma") +
+  ggtitle('Km^2 greenspace access within 5km of meshblock average for SA2')
 
 ```
 
@@ -152,38 +163,43 @@ map_mesh %>%
 ```{r map2}
 
 map_mesh %>%
-  inner_join(df_mesh_lockdown_summary, by = "MB_CODE16" ) %>%
-  filter( MB_CATEGORY_NAME_2016 == 'Parkland') %>%
+  inner_join(df_mesh_lockdown_summary_parks, by = "MB_CODE16" ) %>%
   { . } -> df_parks
 
-map_mesh %>%
-  inner_join(df_mesh_lockdown_summary, by = "MB_CODE16" ) %>%
-  filter( MB_CATEGORY_NAME_2016 != 'Parkland') %>%
-  mutate( area = units::set_units( area, 'km^2') %>% as.numeric() ) %>%
+map_sa1 %>%
+  inner_join(df_sa1_summary, by = "SA1_MAIN16" ) %>%
+  mutate( area.mean = area.mean %>% as.numeric() ) %>%
   ggplot() +
-  geom_sf( aes( fill = area ),lwd=0 ) +
-  geom_sf(data=df_parks, fill="green") +
+  geom_sf( aes( fill = area.mean ),lwd=0 ) +
+  geom_sf(data=df_parks, fill=RColorBrewer::brewer.pal(3,'Greens')[2]) +
   scale_fill_viridis_c(option = "plasma") +
   ggtitle('Km^2 greenspace access within 5km of meshblock. Green is parks')
+
+map_sa2 %>%
+  inner_join(df_sa2_summary, by = "SA2_MAIN16" ) %>%
+  mutate( area.mean = area.mean %>% as.numeric() ) %>%
+  ggplot() +
+  geom_sf( aes( fill = area.mean ),lwd=0 ) +
+  geom_sf(data=df_parks, fill=RColorBrewer::brewer.pal(3,'Greens')[2]) +
+  scale_fill_viridis_c(option = "plasma") +
+  ggtitle('Km^2 greenspace access within 5km of meshblock. Green is parks')
+
 
 ```
 
 
 # Interactive Map
 ```{r interactive_map2}
-map_levels = c('Park','0-5', '5-10', '10-15','15-20','>20')
+map_levels = c('0-5km^2', '5-10km^2', '10-15km^2','15-20km^2','>20km^2')
 
-map_colors = c(
-               RColorBrewer::brewer.pal(3,'Greens')[1],
-               RColorBrewer::brewer.pal(5,'Blues'))
+map_colors = RColorBrewer::brewer.pal(5,'Blues')
 
 map_palette = colorFactor(map_colors, levels=map_levels)
 
-map_mesh %>%
-  inner_join(df_mesh_lockdown_summary, by = "MB_CODE16" ) %>%
-  mutate( area = units::set_units( area, 'km^2') %>% as.numeric() ) %>%
-  mutate( area=ifelse( MB_CATEGORY_NAME_2016 == 'Parkland', -1, area )) %>%
-  mutate( area_factor = cut( area, breaks= c(-2,0, 5,10,15,20,99),
+map_sa2 %>%
+  inner_join(df_sa2_summary, by = "SA2_MAIN16" ) %>%
+  mutate( area.mean = area.mean %>% as.numeric() ) %>%
+  mutate( area_factor = cut( area.mean, breaks= c(0, 5,10,15,20,99),
                             labels= map_levels )) %>%
   { . } -> df_leaflet
 
@@ -193,7 +209,7 @@ df_leaflet %>%
   addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
               color = ~map_palette(area_factor)) %>%
   addLegend("bottomright", pal = map_palette, values = ~area_factor,
-            title = "Total parks within 5km circle",
+            title = "Mean park area within 5km circle of mesh blocks within SA2",
             opacity = 1
   )
 
