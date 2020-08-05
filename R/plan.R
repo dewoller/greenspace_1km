@@ -62,6 +62,7 @@ the_plan <-
 
            df_mesh_lockdown_distance = calculate_intermesh_distances( df_mesh_centroids, df_mesh_lockdown, df_mesh_detail, map_mesh),
            df_mesh_lockdown_summary = summarise_intermesh_distances( df_mesh_lockdown_distance, df_mesh_lockdown, df_mesh_detail, df_mesh_sa1, df_mesh_sa2),
+           df_mesh_lockdown_summary_parks = summarise_intermesh_distances( df_mesh_lockdown_distance, df_mesh_lockdown, df_mesh_detail, df_mesh_sa1, df_mesh_sa2, 'Parkland'),
            #
            report = target( wflow_publish(knitr_in("analysis/lockdown_greenspace.Rmd"),
                                           view = TRUE,
