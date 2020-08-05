@@ -507,16 +507,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhospitalptaccessabilitytree0563d424930ebc88cde288e5e59ce65382218954targetblank0563d42a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/hospital_pt_accessability/tree/0563d424930ebc88cde288e5e59ce65382218954" target="_blank">0563d42</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhospitalptaccessabilitytreecfa232f1d188ae0a73b5f33d31f3d3dfbc86dd20targetblankcfa232fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/hospital_pt_accessability/tree/cfa232f1d188ae0a73b5f33d31f3d3dfbc86dd20" target="_blank">cfa232f</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhospitalptaccessabilitytree0563d424930ebc88cde288e5e59ce65382218954targetblank0563d42a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhospitalptaccessabilitytreecfa232f1d188ae0a73b5f33d31f3d3dfbc86dd20targetblankcfa232fa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/dewoller/hospital_pt_accessability/tree/0563d424930ebc88cde288e5e59ce65382218954" target="_blank">0563d42</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/dewoller/hospital_pt_accessability/tree/cfa232f1d188ae0a73b5f33d31f3d3dfbc86dd20" target="_blank">cfa232f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -580,6 +580,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/dewoller/hospital_pt_accessability/blob/cfa232f1d188ae0a73b5f33d31f3d3dfbc86dd20/analysis/lockdown_greenspace.Rmd" target="_blank">cfa232f</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-08-05
+</td>
+<td>
+workflowr::wflow_publish(“analysis/lockdown_greenspace.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/dewoller/hospital_pt_accessability/1b1df893c401868195cb3947682aeedbe062d9bd/docs/lockdown_greenspace.html" target="_blank">1b1df89</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-08-05
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -3095,17 +3129,98 @@ Warning: Deprecated</code></pre>
   scale_fill_viridis_c(option = &quot;plasma&quot;) +
   ggtitle(&#39;Km^2 greenspace access within 5km of meshblock&#39;)</code></pre>
 <p><img src="figure/lockdown_greenspace.Rmd/map1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-map1-1">
+Past versions of map1-1.png
+</button>
+</p>
+<div id="fig-map1-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/dewoller/hospital_pt_accessability/blob/1b1df893c401868195cb3947682aeedbe062d9bd/docs/figure/lockdown_greenspace.Rmd/map1-1.png" target="_blank">1b1df89</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-08-05
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="map-1" class="section level1">
 <h1>Map</h1>
 <pre class="r"><code>map_mesh %&gt;%
   inner_join(df_mesh_lockdown_summary, by = &quot;MB_CODE16&quot; ) %&gt;%
+  filter( MB_CATEGORY_NAME_2016 == &#39;Parkland&#39;) %&gt;%
+  { . } -&gt; df_parks
+
+map_mesh %&gt;%
+  inner_join(df_mesh_lockdown_summary, by = &quot;MB_CODE16&quot; ) %&gt;%
+  filter( MB_CATEGORY_NAME_2016 != &#39;Parkland&#39;) %&gt;%
   mutate( area = units::set_units( area, &#39;km^2&#39;) %&gt;% as.numeric() ) %&gt;%
   ggplot() +
   geom_sf( aes( fill = area ),lwd=0 ) +
+  geom_sf(data=df_parks, fill=&quot;green&quot;) +
   scale_fill_viridis_c(option = &quot;plasma&quot;) +
-  ggtitle(&#39;Km^2 greenspace access within 5km of meshblock&#39;)</code></pre>
+  ggtitle(&#39;Km^2 greenspace access within 5km of meshblock. Green is parks&#39;)</code></pre>
 <p><img src="figure/lockdown_greenspace.Rmd/map2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-map2-1">
+Past versions of map2-1.png
+</button>
+</p>
+<div id="fig-map2-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/dewoller/hospital_pt_accessability/blob/1b1df893c401868195cb3947682aeedbe062d9bd/docs/figure/lockdown_greenspace.Rmd/map2-1.png" target="_blank">1b1df89</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-08-05
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
