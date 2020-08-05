@@ -39,6 +39,9 @@ df_mesh_lockdown_summary  %>%
 df_lga_summary %>%
   gt::gt()
 
+df_mesh_lockdown_summary  %>%
+  write_csv('output/lockdown_greenspace_mesh_detail.csv')
+
 df_lga_summary %>%
   write_csv('output/lockdown_greenspace_lga_summary.csv')
 
@@ -105,7 +108,7 @@ map_mesh %>%
 
 ```
 
-# Map
+# Green Map
 ```{r map2}
 
 map_mesh %>%
@@ -126,4 +129,34 @@ map_mesh %>%
 ```
 
 
+# Interactive Map
+```{r interactive_map2}
+map_levels = c('Park','0-5', '5-10', '10-15','15-20','>20')
 
+map_colors = c(
+               RColorBrewer::brewer.pal(3,'Greens')[1],
+               RColorBrewer::brewer.pal(5,'Blues'))
+
+map_palette = colorFactor(map_colors, levels=map_levels)
+
+map_mesh %>%
+  inner_join(df_mesh_lockdown_summary, by = "MB_CODE16" ) %>%
+  mutate( area = units::set_units( area, 'km^2') %>% as.numeric() ) %>%
+  mutate( area=ifelse( MB_CATEGORY_NAME_2016 == 'Parkland', -1, area )) %>%
+  mutate( area_factor = cut( area, breaks= c(-2,0, 5,10,15,20,99),
+                       labels= map_levels )) %>%
+  { . } -> df_leaflet
+
+
+df_leaflet %>%
+  leaflet() %>%
+  addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
+              color = ~map_palette(area_factor)) %>%
+  addLegend("bottomright", pal = map_palette, values = ~area_factor,
+            title = "Total parks within 5km circle",
+            opacity = 1
+  )
+
+
+
+```
