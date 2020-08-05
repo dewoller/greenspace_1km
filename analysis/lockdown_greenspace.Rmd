@@ -6,8 +6,8 @@ date:            25.07.2020
 linkcolor:       cyan
 citecolor:       grey
 output:
-  workflowr::wflow_html:
-    code_folding: hide
+workflowr::wflow_html:
+code_folding: hide
 ---
 
 \tableofcontents
@@ -19,8 +19,36 @@ source('_drake.R')
 
 loadd(df_mesh_lockdown_summary)
 loadd(map_mesh)
-
+loadd(df_mesh_lockdown)
+loadd(df_mesh_detail)
 ```
+
+# No Parkland Meshblock Summary
+
+
+```{r}
+
+  df_mesh_lockdown_summary %>%
+    filter(as.numeric(area)==0) %>%
+  { . } -> df_none
+
+df_none %>%
+  count( MB_CATEGORY_NAME_2016, sort=TRUE) %>%
+  gt::gt() %>%
+  gt::tab_header(
+           title = "Meshblocks with no parks within 5km",
+           subtitle = "Number by category"
+)
+
+df_none %>%
+  select(-starts_with('mc'), -State) %>%
+  summarise( across( where(is.numeric),
+                    .fns=list(mean=mean, max=max, min=min, sd=sd, total = sum))) %>%
+  gt::gt() %>%
+gt::tab_header(
+               title = "Meshblocks with no parks within 5km",
+               subtitle = "Summary statistics"
+)
 
 # LGA level summary
 
@@ -37,7 +65,10 @@ df_mesh_lockdown_summary  %>%
   { . } -> df_lga_summary
 
 df_lga_summary %>%
-  gt::gt()
+  gt::gt() %>%
+gt::tab_header(
+               title = "Lga Summary"
+)
 
 df_mesh_lockdown_summary  %>%
   write_csv('output/lockdown_greenspace_mesh_detail.csv')
@@ -48,7 +79,6 @@ df_lga_summary %>%
 ```
 
 # SA2 level summary
-(first 10 rows)
 
 ```{r SA2}
 
@@ -64,7 +94,11 @@ df_mesh_lockdown_summary  %>%
 
 df_sa2_summary %>%
   head(10) %>%
-gt::gt()
+  gt::gt() %>%
+gt::tab_header(
+               title = "SA2 Summary",
+               subtitle = "First 10 rows"
+)
 
 df_sa2_summary %>%
   write_csv('output/lockdown_greenspace_sa2_summary.csv')
@@ -72,7 +106,6 @@ df_sa2_summary %>%
 ```
 
 # SA1 level summary
-(first 10 rows)
 
 ```{r SA1}
 
@@ -88,9 +121,14 @@ df_mesh_lockdown_summary  %>%
 
 df_sa1_summary %>%
   head(10) %>%
-  gt::gt()
+  gt::gt() %>%
+  gt::tab_header(
+                 title = "SA1 Summary",
+                 subtitle = "First 10 rows"
+  )
 
-  df_sa1_summary %>%
+
+df_sa1_summary %>%
   write_csv('output/lockdown_greenspace_sa1_summary.csv')
 
 ```
@@ -144,7 +182,7 @@ map_mesh %>%
   mutate( area = units::set_units( area, 'km^2') %>% as.numeric() ) %>%
   mutate( area=ifelse( MB_CATEGORY_NAME_2016 == 'Parkland', -1, area )) %>%
   mutate( area_factor = cut( area, breaks= c(-2,0, 5,10,15,20,99),
-                       labels= map_levels )) %>%
+                            labels= map_levels )) %>%
   { . } -> df_leaflet
 
 
