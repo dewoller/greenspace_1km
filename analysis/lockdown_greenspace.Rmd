@@ -31,8 +31,8 @@ df_mesh_lockdown_summary  %>%
   select(-starts_with('mc'), -State) %>%
   mutate( area = units::set_units( area, 'km^2') ) %>%
   summarise(across(.cols=where(is_numeric),
-                   .fns=list(mean=mean, max=max, min=min, sd=sd),
-                   .names = "{col}.{fn}"),
+                   .fns=list(mean=mean, max=max, min=min, sd=sd, total = sum),
+                   .names = "{col}.{fn}"), number_mesh_blocks = n(),
             .groups='drop') %>%
   { . } -> df_lga_summary
 
@@ -54,8 +54,8 @@ df_mesh_lockdown_summary  %>%
   select(-starts_with('mc'), -State) %>%
   mutate( area = units::set_units( area, 'km^2') ) %>%
   summarise(across(.cols=where(is_numeric),
-                   .fns=list(mean=mean, max=max, min=min, sd=sd),
-                   .names = "{col}.{fn}"),
+                   .fns=list(mean=mean, max=max, min=min, sd=sd, total = sum),
+                   .names = "{col}.{fn}"), number_mesh_blocks = n(),
             .groups='drop') %>%
   { . } -> df_sa2_summary
 
@@ -78,8 +78,8 @@ df_mesh_lockdown_summary  %>%
   select(-starts_with('mc'), -State) %>%
   mutate( area = units::set_units( area, 'km^2') ) %>%
   summarise(across(.cols=where(is_numeric),
-                   .fns=list(mean=mean, max=max, min=min, sd=sd),
-                   .names = "{col}.{fn}"),
+                   .fns=list(mean=mean, max=max, min=min, sd=sd, total = sum),
+                   .names = "{col}.{fn}"), number_mesh_blocks = n(),
             .groups='drop') %>%
   { . } -> df_sa1_summary
 
@@ -93,7 +93,7 @@ df_sa1_summary %>%
 ```
 
 # Map
-```{r map}
+```{r map1}
 
 map_mesh %>%
   inner_join(df_mesh_lockdown_summary, by = "MB_CODE16" ) %>%
@@ -104,5 +104,19 @@ map_mesh %>%
   ggtitle('Km^2 greenspace access within 5km of meshblock')
 
 ```
+
+# Map
+```{r map2}
+
+map_mesh %>%
+  inner_join(df_mesh_lockdown_summary, by = "MB_CODE16" ) %>%
+  mutate( area = units::set_units( area, 'km^2') %>% as.numeric() ) %>%
+  ggplot() +
+  geom_sf( aes( fill = area ),lwd=0 ) +
+  scale_fill_viridis_c(option = "plasma") +
+  ggtitle('Km^2 greenspace access within 5km of meshblock')
+
+```
+
 
 
