@@ -1,5 +1,8 @@
 source('_drake.R')
 
+df_mesh_lockdown_summary %>%
+  select(areas) %>%
+  unnest(areas) %>%
 
 
 read_excel("data/meshblock-correspondence-file-asgs-2016.xlsx")
