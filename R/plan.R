@@ -1,6 +1,6 @@
 
 
-max_distance = 5
+max_distance = 1
 the_plan <-
   drake_plan(
 
