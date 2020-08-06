@@ -17,8 +17,9 @@ code_folding: hide
 
 source('_drake.R')
 
-loadd(df_mesh_lockdown_summary)
+loadd(df_mesh_lockdown_summary_residential)
 loadd(df_mesh_lockdown_summary_parks)
+loadd(df_mesh_lockdown_summary_all)
 loadd(map_mesh)
 loadd(map_sa1)
 loadd(map_sa2)
@@ -32,7 +33,7 @@ loadd(df_mesh_detail)
 
 ```{r none}
 
-  df_mesh_lockdown_summary %>%
+  df_mesh_lockdown_summary_all %>%
     filter(as.numeric(area)==0) %>%
   { . } -> df_none
 
@@ -55,12 +56,12 @@ gt::tab_header(
 )
 ```
 
-# LGA level summary
+# LGA level summary for Residential Meshblocks
 
 
 ```{r lga}
 
-df_mesh_lockdown_summary  %>%
+df_mesh_lockdown_summary_residential  %>%
   group_by(lga_name) %>%
   select(-starts_with('mc'), -State) %>%
   mutate( area = units::set_units( area, 'km^2') ) %>%
@@ -76,7 +77,7 @@ gt::tab_header(
                title = "Lga Summary"
 )
 
-df_mesh_lockdown_summary  %>%
+df_mesh_lockdown_summary_all  %>%
   write_csv('output/lockdown_greenspace_mesh_detail.csv')
 
 df_lga_summary %>%
@@ -84,11 +85,11 @@ df_lga_summary %>%
 
 ```
 
-# SA2 level summary
+# SA2 level summary for Residential Meshblocks
 
 ```{r SA2}
 
-df_mesh_lockdown_summary  %>%
+df_mesh_lockdown_summary_residential  %>%
   group_by(SA2_MAIN16) %>%
   select(-starts_with('mc'), -State) %>%
   mutate( area = units::set_units( area, 'km^2') ) %>%
@@ -115,7 +116,7 @@ df_sa2_summary %>%
 
 ```{r SA1}
 
-df_mesh_lockdown_summary  %>%
+df_mesh_lockdown_summary_residential  %>%
   group_by(SA1_MAIN16) %>%
   select(-starts_with('mc'), -State) %>%
   mutate( area = units::set_units( area, 'km^2') ) %>%
