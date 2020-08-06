@@ -1,10 +1,10 @@
-calculate_intermesh_distances <- function( df_mesh_centroids, df_mesh_lockdown, df_mesh_detail, map_mesh, max_dist=5000) {
+calculate_intermesh_distances <- function( df_mesh_centroids, df_mesh_lockdown, df_mesh_detail, map_mesh, max_dist=5) {
 
 
   df_mesh_centroids %>%
     inner_join(df_mesh_detail %>% select(MB_CODE16,
                                          MB_CATEGORY_NAME_2016), by='MB_CODE16') %>%
-  mutate( gh = gh_encode(mc_lat, mc_lon, 5)) %>%
+  mutate( gh = gh_encode(mc_lat, mc_lon, ifelse( max_dist < 5, 4, 5) )) %>%
   mutate(ghn = gh_neighbours(gh))%>%
   do.call(data.frame, .) %>%
   as_tibble()  %>%
@@ -46,7 +46,7 @@ df_gh  %>%
   rename( from_lat = lat, from_lon=lon) %>%
   st_as_sf( coords = c("from_lon", "from_lat"), crs = 4283) %>%
   st_transform(3577) %>%
-  mutate( circle = st_buffer( geometry, dist = 5000) ) %>%
+  mutate( circle = st_buffer( geometry, dist = max_dist * 1000) ) %>%
   { . } -> df_from_mc
 
 df_from_mc %>%
@@ -78,7 +78,6 @@ calc_intersection = function( circle, geometry, gh_group) {
 
   warning(gh_group)
   print(gh_group)
-  browser()
 
   st_geometry(geometry) %>%
     st_transform( 3577)  %>%

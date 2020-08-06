@@ -26,6 +26,7 @@ loadd(map_sa2)
 loadd(map_lockdown_lga)
 loadd(df_mesh_lockdown)
 loadd(df_mesh_detail)
+loadd(max_distance)
 ```
 
 # No Parkland Meshblock Summary
@@ -41,7 +42,7 @@ df_none %>%
   count( MB_CATEGORY_NAME_2016, sort=TRUE) %>%
   gt::gt() %>%
   gt::tab_header(
-           title = "Meshblocks with no parks within 5km",
+           title = glue::glue("Meshblocks with no parks within {max_distance}km"),
            subtitle = "Number by category"
 )
 
@@ -51,7 +52,7 @@ df_none %>%
                     .fns=list(mean=mean, max=max, min=min, sd=sd, total = sum))) %>%
   gt::gt() %>%
 gt::tab_header(
-               title = "Meshblocks with no parks within 5km",
+               title = glue::glue("Meshblocks with no parks within {max_distance}km"),
                subtitle = "Summary statistics"
 )
 ```
@@ -72,10 +73,7 @@ df_mesh_lockdown_summary_residential  %>%
   { . } -> df_lga_summary
 
 df_lga_summary %>%
-  gt::gt() %>%
-gt::tab_header(
-               title = "Lga Summary"
-)
+  datatable(options = list(pageLength = 10))
 
 df_mesh_lockdown_summary_all  %>%
   write_csv('output/lockdown_greenspace_mesh_detail.csv')
@@ -151,7 +149,8 @@ map_sa1 %>%
   ggplot() +
   geom_sf( aes( fill = area.mean ),lwd=0 ) +
   scale_fill_viridis_c(option = "plasma") +
-  ggtitle('Km^2 greenspace access within 5km of meshblock average for SA1')
+  ggtitle(glue::glue('Km^2 greenspace access within {max_distance}km of meshblock average for SA1'))
+
 
 map_sa2 %>%
   inner_join(df_sa2_summary, by = "SA2_MAIN16" ) %>%
@@ -159,7 +158,7 @@ map_sa2 %>%
   ggplot() +
   geom_sf( aes( fill = area.mean ),lwd=0 ) +
   scale_fill_viridis_c(option = "plasma") +
-  ggtitle('Km^2 greenspace access within 5km of meshblock average for SA2')
+  ggtitle(glue::glue('Km^2 greenspace access within {max_distance}km of meshblock average for SA2'))
 
 ```
 
@@ -177,7 +176,7 @@ map_sa1 %>%
   geom_sf( aes( fill = area.mean ),lwd=0 ) +
   geom_sf(data=df_parks, fill=RColorBrewer::brewer.pal(3,'Greens')[2]) +
   scale_fill_viridis_c(option = "plasma") +
-  ggtitle('Km^2 greenspace access within 5km of meshblock. Green is parks')
+  ggtitle(glue::glue('Km^2 greenspace access within {max_distance}km of meshblock. Green is parks'))
 
 map_sa2 %>%
   inner_join(df_sa2_summary, by = "SA2_MAIN16" ) %>%
@@ -186,7 +185,7 @@ map_sa2 %>%
   geom_sf( aes( fill = area.mean ),lwd=0 ) +
   geom_sf(data=df_parks, fill=RColorBrewer::brewer.pal(3,'Greens')[2]) +
   scale_fill_viridis_c(option = "plasma") +
-  ggtitle('Km^2 greenspace access within 5km of meshblock. Green is parks')
+  ggtitle(glue::glue('Km^2 greenspace access within {max_distance}km of meshblock. Green is parks'))
 
 
 ```
@@ -195,14 +194,21 @@ map_sa2 %>%
 # Interactive Map SA2 level
 ```{r interactive_map2}
 
-map_levels = c('0-5km^2', '5-10km^2', '10-15km^2','15-20km^2','>20km^2')
+map_breaks = 0:5/5 * max_distance^2
+map_levels = paste0( map_breaks, '-', map_breaks + map_breaks[2] - map_breaks[1], 'km' )
+map_levels [[length(map_levels)-1]] = paste0('>', map_breaks[[ length(map_breaks)-1]], 'km' )
+map_levels = map_levels [1:length(map_levels)-1] 
+map_breaks[[length(map_breaks)]] = 3.2*max_distance^2
+
+
+#map_levels = c('0-5km^2', '5-10km^2', '10-15km^2','15-20km^2','>20km^2')
 map_colors = RColorBrewer::brewer.pal(6,'YlOrRd')[2:6]
 map_palette = colorFactor(map_colors, levels=map_levels)
 
 map_sa2 %>%
   inner_join(df_sa2_summary, by = "SA2_MAIN16" ) %>%
   mutate( area.mean = area.mean %>% as.numeric() ) %>%
-  mutate( area_factor = cut( area.mean, breaks= c(0, 5,10,15,20,99),
+  mutate( area_factor = cut( area.mean, breaks=map_breaks,
                             labels= map_levels )) %>%
   { . } -> df_leaflet
 
@@ -235,7 +241,7 @@ map_palette = colorFactor(map_colors, levels=map_levels)
 map_sa1 %>%
   inner_join(df_sa1_summary, by = "SA1_MAIN16" ) %>%
   mutate( area.mean = area.mean %>% as.numeric() ) %>%
-  mutate( area_factor = cut( area.mean, breaks= c(0, 5,10,15,20,99),
+  mutate( area_factor = cut( area.mean, breaks=map_breaks,
                             labels= map_levels )) %>%
   { . } -> df_leaflet
 
