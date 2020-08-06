@@ -197,11 +197,10 @@ map_sa2 %>%
 map_breaks = 0:5/5 * max_distance^2
 map_levels = paste0( map_breaks, '-', map_breaks + map_breaks[2] - map_breaks[1], 'km' )
 map_levels [[length(map_levels)-1]] = paste0('>', map_breaks[[ length(map_breaks)-1]], 'km' )
-map_levels = map_levels [1:length(map_levels)-1] 
+map_levels = map_levels [1:length(map_levels)-1]
 map_breaks[[length(map_breaks)]] = 3.2*max_distance^2
 
 
-#map_levels = c('0-5km^2', '5-10km^2', '10-15km^2','15-20km^2','>20km^2')
 map_colors = RColorBrewer::brewer.pal(6,'YlOrRd')[2:6]
 map_palette = colorFactor(map_colors, levels=map_levels)
 
@@ -214,11 +213,11 @@ map_sa2 %>%
 
 
 df_leaflet %>%
-  leaflet() %>%
+  leaflet(height=2000, width=2000) %>%
   addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
               color = ~map_palette(area_factor)) %>%
   addLegend("bottomright", pal = map_palette, values = ~area_factor,
-            title = "Mean park area within 5km circle of mesh blocks within SA2",
+            title = glue::glue("Mean park area within {max_distance}km circle of mesh blocks within SA2"),
             opacity = 1
             ) %>%
   addPolygons( weight = .5, smoothFactor = 0.5,
@@ -231,10 +230,9 @@ df_leaflet %>%
 
 ```
 
-# Interactive Map SA1 level
+# Interactive Map SA1 levelk
 ```{r interactive_map1}
 
-map_levels = c('0-5km^2', '5-10km^2', '10-15km^2','15-20km^2','>20km^2')
 map_colors = RColorBrewer::brewer.pal(6,'YlOrRd')[2:6]
 map_palette = colorFactor(map_colors, levels=map_levels)
 
@@ -247,11 +245,11 @@ map_sa1 %>%
 
 
 df_leaflet %>%
-  leaflet() %>%
+  leaflet(height=2000, width=2000) %>%
   addPolygons(stroke = FALSE, smoothFactor = 0.2, fillOpacity = 1,
               color = ~map_palette(area_factor)) %>%
   addLegend("bottomright", pal = map_palette, values = ~area_factor,
-            title = "Mean park area within 5km circle of mesh blocks within SA2",
+            title = glue::glue("Mean park area within {max_distance}km circle of mesh blocks within SA2"),
             opacity = 1
   ) %>%
   addPolygons( weight = .5, smoothFactor = 0.5,
