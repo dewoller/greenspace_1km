@@ -1,8 +1,9 @@
 
 
-max_distance = 5
 the_plan <-
   drake_plan(
+
+             max_distance = 1,
 
              map_mesh= read_sf( 'data/meshblocks/MB_2016_VIC.shp') %>%
                rmapshaper::ms_simplify( sys = TRUE) ,
@@ -60,7 +61,7 @@ the_plan <-
                                                   column="lga_name") %>%
              filter( lga_name != ''),
 
-           df_mesh_lockdown_distance = calculate_intermesh_distances( df_mesh_centroids, df_mesh_lockdown, df_mesh_detail, map_mesh),
+           df_mesh_lockdown_distance = calculate_intermesh_distances( df_mesh_centroids, df_mesh_lockdown, df_mesh_detail, map_mesh, max_dist=max_distance),
            df_mesh_lockdown_summary_all = summarise_intermesh_distances( df_mesh_lockdown_distance, df_mesh_lockdown, df_mesh_detail, df_mesh_sa1, df_mesh_sa2),
            df_mesh_lockdown_summary_residential = df_mesh_lockdown_summary_all %>% filter( MB_CATEGORY_NAME_2016 == 'Residential'),
            df_mesh_lockdown_summary_parks = df_mesh_lockdown_summary_all %>% filter( MB_CATEGORY_NAME_2016 == 'Parkland'),
