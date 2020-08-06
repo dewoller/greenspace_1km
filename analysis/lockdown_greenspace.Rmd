@@ -72,10 +72,7 @@ df_mesh_lockdown_summary_residential  %>%
   { . } -> df_lga_summary
 
 df_lga_summary %>%
-  gt::gt() %>%
-gt::tab_header(
-               title = "Lga Summary"
-)
+  datatable(options = list(pageLength = 10))
 
 df_mesh_lockdown_summary_all  %>%
   write_csv('output/lockdown_greenspace_mesh_detail.csv')
