@@ -90,13 +90,14 @@ df_lga_summary %>%
 ```{r SA2}
 
 df_mesh_lockdown_summary_residential  %>%
-  group_by(SA2_MAIN16) %>%
   select(-starts_with('mc'), -State) %>%
   mutate( area = units::set_units( area, 'km^2') ) %>%
+  group_by(SA2_MAIN16) %>%
   summarise(across(.cols=where(is_numeric),
                    .fns=list(mean=mean, max=max, min=min, sd=sd, total = sum),
                    .names = "{col}.{fn}"), number_mesh_blocks = n(),
             .groups='drop') %>%
+  right_join( df_mesh_lockdown_summary_all %>% distinct(SA2_MAIN16), by ='SA2_MAIN16' ) %>%
   { . } -> df_sa2_summary
 
 df_sa2_summary %>%
@@ -117,13 +118,14 @@ df_sa2_summary %>%
 ```{r SA1}
 
 df_mesh_lockdown_summary_residential  %>%
-  group_by(SA1_MAIN16) %>%
   select(-starts_with('mc'), -State) %>%
   mutate( area = units::set_units( area, 'km^2') ) %>%
+  group_by(SA1_MAIN16) %>%
   summarise(across(.cols=where(is_numeric),
                    .fns=list(mean=mean, max=max, min=min, sd=sd, total = sum),
                    .names = "{col}.{fn}"), number_mesh_blocks = n(),
             .groups='drop') %>%
+  right_join( df_mesh_lockdown_summary_all %>% distinct(SA1_MAIN16), by ='SA1_MAIN16' ) %>%
   { . } -> df_sa1_summary
 
 df_sa1_summary %>%
