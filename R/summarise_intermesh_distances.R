@@ -2,8 +2,7 @@ summarise_intermesh_distances <- function( df_mesh_lockdown_distance,
                                           df_mesh_lockdown,
                                           df_mesh_detail,
                                           df_mesh_sa1,
-                                          df_mesh_sa2,
-                                          target_category="Residential"  ) {
+                                          df_mesh_sa2) {
 
   df_mesh_lockdown_distance %>%
     select(areas) %>%
@@ -15,7 +14,6 @@ summarise_intermesh_distances <- function( df_mesh_lockdown_distance,
     inner_join( df_mesh_sa1, by='MB_CODE16') %>%
     select(-starts_with('mc')) %>%
     inner_join( df_mesh_sa2, by='MB_CODE16') %>%
-    select(-starts_with('mc')) %>%
-    filter( MB_CATEGORY_NAME_2016 == target_category)
+    select(-starts_with('mc')) 
 
 }

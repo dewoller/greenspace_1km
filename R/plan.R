@@ -61,8 +61,9 @@ the_plan <-
              filter( lga_name != ''),
 
            df_mesh_lockdown_distance = calculate_intermesh_distances( df_mesh_centroids, df_mesh_lockdown, df_mesh_detail, map_mesh),
-           df_mesh_lockdown_summary = summarise_intermesh_distances( df_mesh_lockdown_distance, df_mesh_lockdown, df_mesh_detail, df_mesh_sa1, df_mesh_sa2),
-           df_mesh_lockdown_summary_parks = summarise_intermesh_distances( df_mesh_lockdown_distance, df_mesh_lockdown, df_mesh_detail, df_mesh_sa1, df_mesh_sa2, 'Parkland'),
+           df_mesh_lockdown_summary_all = summarise_intermesh_distances( df_mesh_lockdown_distance, df_mesh_lockdown, df_mesh_detail, df_mesh_sa1, df_mesh_sa2),
+           df_mesh_lockdown_summary_residential = df_mesh_lockdown_summary_all %>% filter( MB_CATEGORY_NAME_2016 == 'Residential'),
+           df_mesh_lockdown_summary_parks = df_mesh_lockdown_summary_all %>% filter( MB_CATEGORY_NAME_2016 == 'Parkland'),
            #
            report = target( wflow_publish(knitr_in("analysis/lockdown_greenspace.Rmd"),
                                           view = TRUE,
