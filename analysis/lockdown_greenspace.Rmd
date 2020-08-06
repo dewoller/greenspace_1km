@@ -23,7 +23,7 @@ loadd(df_mesh_lockdown_summary_all)
 loadd(map_mesh)
 loadd(map_sa1)
 loadd(map_sa2)
-loadd(map_lga)
+loadd(map_lockdown_lga)
 loadd(df_mesh_lockdown)
 loadd(df_mesh_detail)
 ```
@@ -217,7 +217,7 @@ df_leaflet %>%
             ) %>%
   addPolygons( weight = .5, smoothFactor = 0.5,
               opacity = .5, fillOpacity = 0.0,
-              data = map_lga) %>%
+              data = map_lockdown_lga) %>%
   addPolygons( weight = 1, smoothFactor = 0.5,
               opacity = 1, fillOpacity = 1,
               color = RColorBrewer::brewer.pal(3,'Greens')[2],
@@ -250,7 +250,7 @@ df_leaflet %>%
   ) %>%
   addPolygons( weight = .5, smoothFactor = 0.5,
               opacity = .5, fillOpacity = 0.0,
-              data = map_lga) %>%
+              data = map_lockdown_lga) %>%
   addPolygons( weight = 1, smoothFactor = 0.5,
               opacity = 1, fillOpacity = 1,
               color = RColorBrewer::brewer.pal(3,'Greens')[2],
